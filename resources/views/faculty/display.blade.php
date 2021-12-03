@@ -1,0 +1,117 @@
+@extends('faculty.layouts.master')
+
+@section('title')
+Student List
+@endsection
+
+@section('content')
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+Assigned Student Information
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+      </ol>
+    </section>
+       @if(count($errors)>0)
+        <div class="alert alert-danger w-50 mx-auto mt-3 text-center">
+          <ul>
+            @foreach($errors->all() as $error)
+              <li style="list-style: none;">{{$error}}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
+<!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            
+            <div class="box-header">
+                    <h4 class="h4 text-info">Select Semester</h4>
+                    <form method="get">
+                      <select name="search" class="form-control show-tick">
+                       <option>--Select semester--</option>
+                        <option value="Spring-2020">Spring-2020</option>
+                        <option value="Summer-2020">Summer-2020</option>
+                        <option value="Fall-2020">Fall-2020</option>
+                         <option value="Spring-2021">Spring-2021</option>
+                        <option value="Summer-2021">Summer-2021</option>
+                        <option value="Fall-2021">Fall-2021</option>
+                       </select> 
+                    
+                      <button class="btn btn-info mt-2" id="searchCat">Seach</button>
+                    </form>
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+      <div class="table-responsive">
+        <table id="user_table" class="table table-bordered table-striped">
+          <thead>
+                                  <tr>
+                                  <th>Student ID</th>
+                                  <th>Student Name</th>
+                                  <th>Batch</th>
+                                  <th>Semester</th> 
+                                  <th>Email</th> 
+                                  <th>Phone</th>
+                                  <th>Project/Thesis</th>
+                                  <th>Title</th>
+                             
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @foreach($students as $freelancer)
+                                 @if($freelancer->sv_name ==  Auth::user()->name)
+                                <tr>
+                                  <td> {{ $freelancer->s_id}} </td>
+                                  <td> {{ $freelancer->s_name}} </td>
+                                  <td> {{ $freelancer->batch}} </td>
+                                  <td>{{ $freelancer->semester }}</td>
+                                  <td> {{ $freelancer->email}} </td>
+                                  <td> {{ $freelancer->phone}} </td>
+                                  <td> {{ $freelancer->project}} </td>
+                                  <td> {{ $freelancer->title}} </td>
+                                 
+                                  <td><a href="{{action('FacultyController@show', $freelancer['id'])}}" class="btn btn-info btn-xs">View</a>
+                                  <a href="{{action('MessageController@edit', $freelancer['id'])}}" class="btn btn-primary btn-xs">Send Message</a></td>
+                                </tr>
+                                  @endif 
+                                @endforeach
+                              </tbody>
+                             <span id="val"></span>
+                            </table>
+                           </div>
+                           </div>
+                           </div>
+                           </div>
+                           </div>
+                      <script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("mylist");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+} 
+    </script>    
+        
+@endsection
